@@ -3,8 +3,17 @@
 {% block page_primary_action %}
   {{ super() }}
 
+
+
+
+<br/>
+<br/>
+<br/><br/>
+
+  {{ [org['id'] for org in h.organizations_available(permission='manage_group')] }}
+
     <br/>
-    {% if c.group_dict.id in [org.id:org for org in h.organizations_available(permission='manage_group')] %}
+    {% if c.group_dict.id in [org['id'] for org in h.organizations_available(permission='manage_group')] %}
             <p>true</p><br/>
     {% else %}
             <p>false</p><br/>
