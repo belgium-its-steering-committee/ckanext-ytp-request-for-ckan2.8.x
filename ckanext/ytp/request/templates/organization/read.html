@@ -2,7 +2,7 @@
 
 {% block page_primary_action %}
   {{ super() }}
-   {% if h.check_access('member_request_create', {'organization_id': c.group_dict.id}) %}
+   {% if h.check_access('member_request_create', {'organization_id': c.group_dict.id}) and not h.user_in_org_or_group(c.group_dict.id) %}
       <a class="btn btn-primary" href="{{ h.url_for('member_request_create', selected_organization=c.group_dict.name) }}">
           <i class="icon-circle-arrow-right"></i>
           {% trans %}Request membership{% endtrans %}
