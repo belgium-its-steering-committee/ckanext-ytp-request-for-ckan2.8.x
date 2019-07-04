@@ -34,3 +34,6 @@ nosetests.xml
 test.py
 execute.py
 .settings
+
+# PyCharm
+.idea
