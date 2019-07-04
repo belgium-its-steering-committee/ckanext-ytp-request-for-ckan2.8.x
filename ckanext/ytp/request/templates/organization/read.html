@@ -2,18 +2,6 @@
 
 {% block page_primary_action %}
   {{ super() }}
-    {% set organizations=[org['id'] for org in h.organizations_available(permission='manage_group')] %}
-      {{ organizations }}
-
-        <br/>
-        {% if c.group_dict.id in organizations %}
-                <p>true</p><br/>
-        {% else %}
-                <p>false</p><br/>
-        {% endif %}
-
-    <br/>
-
        {% if h.check_access('member_request_create', {'organization_id': c.group_dict.id}) and not h.user_in_org_or_group(c.group_dict.id) %}
           <a class="btn btn-primary" href="{{ h.url_for('member_request_create', selected_organization=c.group_dict.name) }}">
               <i class="icon-circle-arrow-right"></i>
@@ -33,5 +21,4 @@
               {% trans %}Cancel request{% endtrans %}
           </a>
       {% endif %}
-    {% endset %}
 {% endblock %}
