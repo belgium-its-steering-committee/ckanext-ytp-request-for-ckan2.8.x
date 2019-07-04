@@ -4,17 +4,7 @@
   {{ super() }}
 
     <br/>
-    {{ h.organizations_available() }} <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    {{ h.organizations_available(permission='manage_group') }} <br/>
-    <br/>
-    <br/>
-    {{ c.group_dict.id }} <br/>
-    {{ h.user_in_org_or_group(c.group_dict.id) }} <br/>
-    {% if c.group_dict.id in h.organizations_available() %}
+    {% if c.group_dict.id in [org.id for org in h.organizations_available(permission='manage_group')] %}
             <p>true</p><br/>
     {% else %}
             <p>false</p><br/>
