@@ -2,6 +2,25 @@
 
 {% block page_primary_action %}
   {{ super() }}
+
+    <br/>
+    {{ h.organizations_available() }} <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    {{ organizations_available(permission='manage_group') }} <br/>
+    <br/>
+    <br/>
+    {{ c.group_dict.id }} <br/>
+    {{ h.user_in_org_or_group(c.group_dict.id) }} <br/>
+    {% if c.group_dict.id in h.organizations_available() %}
+            <p>true</p><br/>
+    {% else %}
+            <p>false</p><br/>
+    {% endif %}
+<br/>
+
    {% if h.check_access('member_request_create', {'organization_id': c.group_dict.id}) and not h.user_in_org_or_group(c.group_dict.id) %}
       <a class="btn btn-primary" href="{{ h.url_for('member_request_create', selected_organization=c.group_dict.name) }}">
           <i class="icon-circle-arrow-right"></i>
