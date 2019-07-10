@@ -11,6 +11,12 @@ log = logging.getLogger(__name__)
 
 
 def member_request(context, data_dict):
+    """
+    :param context: context object
+    :param data_dict: data dictionary
+    :type context: dict
+    :type data_dict: dict
+    """
     logic.check_access('member_request_show', context, data_dict)
     mrequest_id = data_dict.get('mrequest_id', None)
 
@@ -38,8 +44,13 @@ def member_request(context, data_dict):
 
 
 def member_requests_mylist(context, data_dict):
-    ''' Users wil see a list of her member requests
-    '''
+    """
+    Users wil see a list of her member requests
+    :param context: context object
+    :param data_dict: data dictionary
+    :type context: dict
+    :type data_dict: dict
+    """
     logic.check_access('member_requests_mylist', context, data_dict)
 
     user = context.get('user', None)
@@ -56,10 +67,13 @@ def member_requests_mylist(context, data_dict):
 
 
 def member_requests_list(context, data_dict):
-    ''' Organization admins/editors will see a list of member requests to be approved.
-    :param group: name of the group (optional)
-    :type group: string
-    '''
+    """
+    Organization admins/editors will see a list of member requests to be approved.
+    :param context: context object
+    :param data_dict: data dictionary
+    :type context: dict
+    :type data_dict: dict
+    """
     logic.check_access('member_requests_list', context, data_dict)
 
     user = context.get('user', None)
