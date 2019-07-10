@@ -39,10 +39,6 @@ def _create_member_request(context, data_dict):
         raise logic.NotFound
     group = model.Group.get(data_dict.get('group', None))
 
-    print("#"*30)
-    print(group)
-    print("#"*30)
-
     if not group or group.type != 'organization':
         raise logic.NotFound
 
@@ -85,10 +81,6 @@ def _create_member_request(context, data_dict):
     revision = model.repo.new_revision()
     revision.author = user
     revision.message = u'New member request'
-
-    print("#" * 30)
-    print(member)
-    print("#" * 30)
 
     model.Session.add(member)
     # We need to flush since we need membership_id (member.id) already
