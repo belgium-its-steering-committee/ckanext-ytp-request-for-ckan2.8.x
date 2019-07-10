@@ -79,6 +79,9 @@ def _create_member_request(context, data_dict):
     member.state = 'pending'
     member.capacity = role
 
+    if member.group is None:
+        member.group = group
+
     revision = model.repo.new_revision()
     revision.author = user
     revision.message = u'New member request'
