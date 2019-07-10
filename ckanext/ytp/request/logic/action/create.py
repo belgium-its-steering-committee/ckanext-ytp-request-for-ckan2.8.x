@@ -13,22 +13,35 @@ log = logging.getLogger(__name__)
 
 
 def member_request_create(context, data_dict):
-    ''' Create new member request. User is taken from context.
+    """
+    Create new member request. User is taken from context.
     Sysadmins should not be able to create "member" requests since they have full access to all organizations
-    :param group: name of the group or organization
-    :type group: string
-    '''
+    :param context: context object
+    :param data_dict: data dictionary
+    :type context: dict
+    :type data_dict: dict
+    """
     logic.check_access('member_request_create', context, data_dict)
     member = _create_member_request(context, data_dict)
     return model_dictize.member_dictize(member, context)
 
 
 def _create_member_request(context, data_dict):
-    """ Helper to create member request """
+    """
+    Helper to create member request
+    :param context: context object
+    :param data_dict: data dictionary
+    :type context: dict
+    :type data_dict: dict
+    """
     role = data_dict.get('role', None)
     if not role:
         raise logic.NotFound
     group = model.Group.get(data_dict.get('group', None))
+
+    print("#"*30)
+    print(group)
+    print("#"*30)
 
     if not group or group.type != 'organization':
         raise logic.NotFound
