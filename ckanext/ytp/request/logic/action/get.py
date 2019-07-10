@@ -103,13 +103,6 @@ def member_requests_list(context, data_dict):
 
     members = query.all()
 
-    print("#"*30)
-    print(context)
-    print(data_dict)
-    print(members)
-    print(group)
-    print("#"*30)
-
     return _member_list_dictize(members, context)
 
 
