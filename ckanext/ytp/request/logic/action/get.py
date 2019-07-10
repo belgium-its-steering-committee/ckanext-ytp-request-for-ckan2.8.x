@@ -172,7 +172,7 @@ def _member_list_dictize(obj_list, context, sort_key=lambda x: x['group_id'], re
         member_dict = model_dictize.member_dictize(obj, context)
         user = model.Session.query(model.User).get(obj.table_id)
 
-        member_dict['group_name'] = obj.group.name
+        member_dict['group_name'] = obj.group.name if obj.group is not None else None
         member_dict['role'] = obj.capacity
         # Member request must always exist since state is pending. Fetch just
         # the latest
