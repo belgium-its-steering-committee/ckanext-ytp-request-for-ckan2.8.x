@@ -68,7 +68,7 @@ def _create_member_request(context, data_dict):
         # Unknown status. Should never happen..
         elif member.state != 'deleted':
             raise logic.ValidationError({"organization": _(
-                "Duplicate organization request")}, {_("Organization"): message})
+                "Duplicate organization request")}, {_("Organization"): ""})
     else:
         member = model.Member(table_name="user", table_id=userobj.id,
                               group_id=group.id, capacity=role, state='pending')
@@ -83,13 +83,17 @@ def _create_member_request(context, data_dict):
     revision.author = user
     revision.message = u'New member request'
 
+    print("#" * 30)
+    print(member)
+    print("#" * 30)
+
     model.Session.add(member)
     # We need to flush since we need membership_id (member.id) already
     model.Session.flush()
 
-    memberRequest = MemberRequest(
+    member_request = MemberRequest(
         membership_id=member.id, role=role, status="pending", language=locale)
-    model.Session.add(memberRequest)
+    model.Session.add(member_request)
     model.repo.commit()
 
     url = config.get('ckan.site_url', "")
