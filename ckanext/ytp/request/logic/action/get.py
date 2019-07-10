@@ -25,21 +25,21 @@ def member_request(context, data_dict):
         raise logic.NotFound("Member request not found")
 
     # Return most current instance from memberrequest table
-    member_request = model.Session.query(MemberRequest).filter(
+    member_request_obj = model.Session.query(MemberRequest).filter(
         MemberRequest.membership_id == mrequest_id).order_by('request_date desc').limit(1).first()
-    if not member_request or member_request.status != 'pending':
+    if not member_request_obj or member_request_obj.status != 'pending':
         raise logic.NotFound(
             "Member request associated with membership not found")
 
-    member_dict = {}
-    member_dict['id'] = mrequest_id
-    member_dict['organization_name'] = membership.group.name
-    member_dict['group_id'] = membership.group_id
-    member_dict['role'] = member_request.role
-    member_dict['state'] = 'pending'
-    member_dict['request_date'] = member_request.request_date.strftime(
-        "%d - %b - %Y")
-    member_dict['user_id'] = membership.table_id
+    member_dict = {
+        'id': mrequest_id,
+        'organization_name': membership.group.name,
+        'group_id': membership.group_id,
+        'role': member_request_obj.role,
+        'state': 'pending',
+        'request_date': member_request_obj.request_date.strftime("%d - %b - %Y"),
+        'user_id': membership.table_id
+    }
     return member_dict
 
 
@@ -85,7 +85,8 @@ def member_requests_list(context, data_dict):
         model.Member.table_name == 'user').filter(model.Member.state == 'pending')
 
     if not is_sysadmin:
-        admin_in_groups = model.Session.query(model.Member).filter(model.Member.state == 'active').filter(model.Member.table_name == 'user') \
+        admin_in_groups = model.Session.query(model.Member).filter(model.Member.state == 'active')\
+            .filter(model.Member.table_name == 'user') \
             .filter(model.Member.capacity == 'admin').filter(model.Member.table_id == user_object.id)
 
         if admin_in_groups.count() <= 0:
@@ -139,7 +140,7 @@ def _membeship_request_list_dictize(obj_list, context):
         organization = model.Session.query(model.Group).get(obj.group_id)
         # Fetch the newest member_request associated to this membership (sort
         # by last modified field)
-        member_request = model.Session.query(MemberRequest).filter(
+        member_request_obj = model.Session.query(MemberRequest).filter(
             MemberRequest.membership_id == obj.id).order_by('request_date desc').limit(1).first()
         # Filter out those with cancel state as there is no need to show them to the end user
         # Show however those with 'rejected' state as user may want to know about them
@@ -151,16 +152,16 @@ def _membeship_request_list_dictize(obj_list, context):
         member_dict['state'] = 'active'
         # We use the member_request state since there is also rejected and
         # cancel
-        if member_request is not None and member_request.status is not 'cancel':
-            member_dict['state'] = member_request.status
-            member_dict['role'] = member_request.role
-            member_dict['request_date'] = member_request.request_date.strftime(
+        if member_request_obj is not None and member_request_obj.status is not 'cancel':
+            member_dict['state'] = member_request_obj.status
+            member_dict['role'] = member_request_obj.role
+            member_dict['request_date'] = member_request_obj.request_date.strftime(
                 "%d - %b - %Y")
-            if member_request.handling_date:
-                member_dict['handling_date'] = member_request.handling_date.strftime(
+            if member_request_obj.handling_date:
+                member_dict['handling_date'] = member_request_obj.handling_date.strftime(
                     "%d - %b - %Y")
-                member_dict['handled_by'] = member_request.handled_by
-        if member_request is None or member_request.status is not 'cancel':
+                member_dict['handled_by'] = member_request_obj.handled_by
+        if member_request_obj is None or member_request_obj.status is not 'cancel':
             result_list.append(member_dict)
     return result_list
 
@@ -176,12 +177,12 @@ def _member_list_dictize(obj_list, context, sort_key=lambda x: x['group_id'], re
         member_dict['role'] = obj.capacity
         # Member request must always exist since state is pending. Fetch just
         # the latest
-        member_request = model.Session.query(MemberRequest).filter(MemberRequest.membership_id == obj.id)\
+        member_request_obj = model.Session.query(MemberRequest).filter(MemberRequest.membership_id == obj.id)\
             .filter(MemberRequest.status == 'pending').order_by('request_date desc').limit(1).first()
         # This should never happen but..
         my_date = ""
-        if member_request is not None:
-            my_date = member_request.request_date.strftime("%d - %b - %Y")
+        if member_request_obj is not None:
+            my_date = member_request_obj.request_date.strftime("%d - %b - %Y")
 
         member_dict['request_date'] = my_date
         member_dict['mid'] = obj.id
