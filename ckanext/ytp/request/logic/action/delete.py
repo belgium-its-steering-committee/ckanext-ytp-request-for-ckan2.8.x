@@ -12,11 +12,14 @@ log = logging.getLogger(__name__)
 
 
 def member_request_cancel(context, data_dict):
-    ''' Cancel own request (from logged in user). Organization_id must be provided.
-     We cannot rely on membership_id since existing memberships can be created also from different ways (e.g. a user creates an organization)
-    :param organization_id: id of the organization
-    :type member: string
-    '''
+    """
+    Cancel own request (from logged in user). Organization_id must be provided.
+    We cannot rely on membership_id since existing memberships can be created also from different ways (e.g. a user creates an organization)
+    :param context: context object
+    :param data_dict: data dictionary
+    :type context: dict
+    :type data_dict: dict
+    """
     logic.check_access('member_request_cancel', context, data_dict)
 
     organization_id = data_dict.get("organization_id")
@@ -32,10 +35,13 @@ def member_request_cancel(context, data_dict):
 
 
 def member_request_membership_cancel(context, data_dict):
-    ''' Cancel ACTIVE organization membership (not request) from logged in user. Organization_id must be provided.
-    :param organization_id: id of the organization
-    :type member: string
-    '''
+    """
+    Cancel ACTIVE organization membership (not request) from logged in user. Organization_id must be provided.
+    :param context: context object
+    :param data_dict: data dictionary
+    :type context: dict
+    :type data_dict: dict
+    """
     logic.check_access('member_request_membership_cancel', context, data_dict)
 
     organization_id = data_dict.get("organization_id")
@@ -50,11 +56,18 @@ def member_request_membership_cancel(context, data_dict):
 
 
 def _process_request(context, organization_id, member, status):
-    ''' Cancel a member request or existing membership.
-        Delete from database the member request (if existing) and set delete state in member table
+    """
+    Cancel a member request or existing membership.
+    Delete from database the member request (if existing) and set delete state in member table
+    :param context: context object
+    :param organization_id:
     :param member: id of the member
+    :param status:
+    :type context: dict
+    :type organization_id:
     :type member: string
-    '''
+    :type status:
+    """
     user = context.get("user")
 
     # Logical delete on table member

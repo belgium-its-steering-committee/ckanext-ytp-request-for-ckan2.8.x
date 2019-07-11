@@ -32,7 +32,7 @@ def _process(context, action, data_dict):
     """
     Approve or reject member request.
     :param context: context object
-    :param action: action object
+    :param action: action string 'approve' else 'reject'
     :param data_dict: data dictionary
     :type context: dict
     :type action: str
