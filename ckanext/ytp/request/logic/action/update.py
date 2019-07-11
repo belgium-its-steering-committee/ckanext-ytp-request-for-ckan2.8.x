@@ -52,7 +52,9 @@ def _process(context, action, data_dict):
     print(type(role))
     role = str(role)
     print(type(role))
-    if role is not None and role is not 'admin' and role is not 'editor':
+    print(role is not None)
+    print(role not in ['admin', 'editor'])
+    if role is not None and role not in ['admin', 'editor']:
         raise logic.ValidationError("Role ({0}) is not a valid value".format(role))
 
     member = model.Session.query(model.Member).filter(
