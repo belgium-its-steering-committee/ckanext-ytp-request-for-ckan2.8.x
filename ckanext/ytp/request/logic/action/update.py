@@ -48,12 +48,7 @@ def _process(context, action, data_dict):
     role = data_dict.get("role", None)
     if not mrequest_id:
         raise logic.NotFound
-    print(role)
-    print(type(role))
     role = str(role)
-    print(type(role))
-    print(role is not None)
-    print(role not in ['admin', 'editor'])
     if role is not None and role not in ['admin', 'editor']:
         raise logic.ValidationError("Role ({0}) is not a valid value".format(role))
 
