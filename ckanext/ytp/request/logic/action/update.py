@@ -11,26 +11,33 @@ log = logging.getLogger(__name__)
 
 
 def member_request_reject(context, data_dict):
-    ''' Cancel request (from admin or group editor). Member request must be provided since we need both organization/user
-        Difference is that this action should be logged and showed to the user. If a user cancels herself her own request can be safely
-        deleted '''
+    """
+    Cancel request (from admin or group editor). Member request must be provided since we need both organization/user
+    Difference is that this action should be logged and showed to the user. If a user cancels herself her own request
+    can be safely deleted
+    """
     logic.check_access('member_request_reject', context, data_dict)
     _process(context, 'reject', data_dict)
 
 
 def member_request_approve(context, data_dict):
-    ''' Approve request (from admin or group editor). Member request must be provided since we need both organization/user'''
+    """
+    Approve request (from admin or group editor). Member request must be provided since we need both organization/user
+    """
     logic.check_access('member_request_approve', context, data_dict)
     _process(context, 'approve', data_dict)
 
 
 def _process(context, action, data_dict):
-    ''' Approve or reject member request.
-    :param member request: member request id
-    :type member: string
-    :param approve: approve or reject request
-    :type accept: boolean
-    '''
+    """
+    Approve or reject member request.
+    :param context: context object
+    :param action: action object
+    :param data_dict: data dictionary
+    :type context: dict
+    :type action: str
+    :type data_dict: dict
+    """
     approve = action == 'approve'  # else 'reject'
     # Old table member we respect the existing states but we differentiate in
     # between cancel and rejected in our new table
