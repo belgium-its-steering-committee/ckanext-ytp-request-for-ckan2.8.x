@@ -53,7 +53,10 @@ Best regards
 
 def mail_new_membership_request(locale, admin, group_name, url, user_name, user_email):
     current_locale = get_lang()
-    i18n.set_lang("en")
+    if locale == 'en':
+        _reset_lang()
+    else:
+        set_lang(locale)
 
     subject = _SUBJECT_MEMBERSHIP_REQUEST() % {
         'organization': group_name
