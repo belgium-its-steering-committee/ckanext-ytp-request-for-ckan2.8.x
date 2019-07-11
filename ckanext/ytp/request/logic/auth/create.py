@@ -6,7 +6,9 @@ log = logging.getLogger(__name__)
 
 
 def member_request_create(context, data_dict):
-    """ Only allow to logged in users """
+    """
+    Only allow to logged in users
+    """
     if not authz.auth_is_loggedin_user():
         return {'success': False, 'msg': _('User is not logged in')}
 

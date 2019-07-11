@@ -6,7 +6,13 @@ log = logging.getLogger(__name__)
 
 
 def member_request(context, data_dict):
-    """ Only allowed to sysadmins or organization admins """
+    """
+    Only allowed to sysadmins or organization admins
+    :param context: context object
+    :param data_dict: data dictionary
+    :type context: dict
+    :type data_dict: dict
+    """
     if not c.userobj:
         return {'success': False}
 
@@ -26,14 +32,26 @@ def member_request(context, data_dict):
 
 
 def member_requests_mylist(context, data_dict):
-    """ Show request access check """
+    """
+    Show request access check
+    :param context: context object
+    :param data_dict: data dictionary
+    :type context: dict
+    :type data_dict: dict
+    """
     # TODO: Sysadmins dont have this functionality since it is pointless. Make
     # it at the logical level
     return _only_registered_user()
 
 
 def member_requests_list(context, data_dict):
-    """ Show request access check """
+    """
+    Show request access check
+    :param context: context object
+    :param data_dict: data dictionary
+    :type context: dict
+    :type data_dict: dict
+    """
     return _only_registered_user()
 
 

@@ -14,7 +14,13 @@ def member_request_reject(context, data_dict):
 
 
 def _check_admin_access(context, data_dict):
-    """ Approve access check """
+    """
+    Approve access check
+    :param context: context object
+    :param data_dict: data dictionary
+    :type context: dict
+    :type data_dict: dict
+    """
     if authz.is_sysadmin(context.get('user', None)):
         return {'success': True}
 
