@@ -50,6 +50,8 @@ def _process(context, action, data_dict):
         raise logic.NotFound
     print(role)
     print(type(role))
+    role = str(role)
+    print(type(role))
     if role is not None and role is not 'admin' and role is not 'editor':
         raise logic.ValidationError("Role ({0}) is not a valid value".format(role))
 
