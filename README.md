@@ -12,7 +12,7 @@ Features
 
 ## Compatibility
 
-Tested with CKAN 2.2 - 2.3
+Tested with CKAN 2.8
 
 ## Installation
 
@@ -26,4 +26,11 @@ Add to ckan.ini
 
 ```
 ckan.plugins = ... ytp_request
+```
+
+Initialize the database
+
+```
+cd /usr/lib/ckan/default/src/ckanext-ytp-request
+paster initdb --config=/etc/ckan/default/production.ini
 ```
