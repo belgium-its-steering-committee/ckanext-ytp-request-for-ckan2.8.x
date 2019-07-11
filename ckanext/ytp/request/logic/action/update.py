@@ -48,6 +48,7 @@ def _process(context, action, data_dict):
     role = data_dict.get("role", None)
     if not mrequest_id:
         raise logic.NotFound
+    print(role is not None)
     role = str(role)
     print(role)
     print(type(role))
