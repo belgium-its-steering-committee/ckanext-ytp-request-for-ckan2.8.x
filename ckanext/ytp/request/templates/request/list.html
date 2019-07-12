@@ -2,6 +2,8 @@
 
 {% block subtitle %}{{ _('Received membership requests') }}{% endblock %}
 
+{% set group_type = 'organization' %}
+
 {% block breadcrumb_content %}
   <li>{% link_for _('Organizations'), named_route=group_type+'.index' %}</li>
   {% block breadcrumb_content_inner %}
