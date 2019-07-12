@@ -107,6 +107,8 @@ class YtpRequestController(BaseController):
         """ Lists member requests to be approved by admins"""
         context = {'user': c.user or c.author}
         id = request.params.get('id', None)
+        selected_organization = request.params.get('selected_organization', None)
+        print(selected_organization)
         try:
             member_requests = toolkit.get_action(
                 'member_requests_list')(context, {})
