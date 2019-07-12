@@ -109,9 +109,8 @@ class YtpRequestController(BaseController):
         id = request.params.get('id', None)
         selected_organization = request.params.get('selected_organization', None)
         organization = toolkit.get_action('organization_show')(context, {'id': selected_organization})
-        print(organization)
         try:
-            member_requests = toolkit.get_action('member_requests_list')(context, {})
+            member_requests = toolkit.get_action('member_requests_list')(context, {'group': selected_organization})
             message = None
             if id:
                 message = _("Member request processed successfully")
