@@ -108,16 +108,16 @@ class YtpRequestController(BaseController):
         context = {'user': c.user or c.author}
         id = request.params.get('id', None)
         selected_organization = request.params.get('selected_organization', None)
-        print(selected_organization)
+        organization = toolkit.get_action('organization_show')(context, {'id': selected_organization})
+        print(organization)
         try:
-            member_requests = toolkit.get_action(
-                'member_requests_list')(context, {})
+            member_requests = toolkit.get_action('member_requests_list')(context, {})
             message = None
             if id:
                 message = _("Member request processed successfully")
             log.debug("%s", message)
             extra_vars = {
-                'member_requests': member_requests, 'message': message}
+                'member_requests': member_requests, 'message': message, 'organization': organization}
             return render('request/list.html', extra_vars=extra_vars)
         except logic.NotAuthorized:
             abort(401, self.not_auth_message)
