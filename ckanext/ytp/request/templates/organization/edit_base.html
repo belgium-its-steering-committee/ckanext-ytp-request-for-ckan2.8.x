@@ -3,5 +3,5 @@
 
 {% block content_primary_nav %}
   {{ super() }}
-    {{ h.build_nav_icon(group_type + '.requests', _('Member requests'), id=organization.name) }}
+    {{ h.build_nav_icon('member_requests_list', _('Member requests'), id=organization.name) }}
 {% endblock %}
