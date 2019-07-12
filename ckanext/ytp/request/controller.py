@@ -109,6 +109,9 @@ class YtpRequestController(BaseController):
         id = request.params.get('id', None)
         selected_organization = request.params.get('selected_organization', None)
         organization = toolkit.get_action('organization_show')(context, {'id': selected_organization})
+        print("#"*30)
+        print(organization)
+        print("#"*30)
         try:
             member_requests = toolkit.get_action('member_requests_list')(context, {'group': selected_organization})
             message = None
