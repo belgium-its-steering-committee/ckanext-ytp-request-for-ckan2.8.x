@@ -116,7 +116,8 @@ class YtpRequestController(BaseController):
                 message = _("Member request processed successfully")
             log.debug("%s", message)
             extra_vars = {
-                'member_requests': member_requests, 'message': message, 'organization': organization}
+                'member_requests': member_requests, 'message': message, 'group_dict': organization,
+                'group_type': 'organization'}
             return render('request/list.html', extra_vars=extra_vars)
         except logic.NotAuthorized:
             abort(401, self.not_auth_message)
