@@ -108,7 +108,10 @@ class YtpRequestController(BaseController):
         context = {'user': c.user or c.author}
         id = request.params.get('id', None)
         selected_organization = request.params.get('selected_organization', None)
-        organization = toolkit.get_action('organization_show')(context, {'id': selected_organization})
+        if selected_organization:
+            organization = toolkit.get_action('organization_show')(context, {'id': selected_organization})
+        else:
+            organization = None
         print("#"*30)
         print(organization)
         print("#"*30)
