@@ -9,7 +9,7 @@ log = logging.getLogger(__name__)
 
 def _SUBJECT_MEMBERSHIP_REQUEST():
     return _(
-            "New membership request (%(organization)s)")
+        "New membership request (%(organization)s)")
 
 
 def _MESSAGE_MEMBERSHIP_REQUEST():
@@ -25,7 +25,7 @@ Best regards
 
 def _SUBJECT_MEMBERSHIP_APPROVED():
     return _(
-            "Organization membership approved (%(organization)s)")
+        "Organization membership approved (%(organization)s)")
 
 
 def _MESSAGE_MEMBERSHIP_APPROVED():
@@ -39,7 +39,7 @@ Best regards
 
 def _SUBJECT_MEMBERSHIP_REJECTED():
     return _(
-            "Organization membership rejected (%(organization)s)")
+        "Organization membership rejected (%(organization)s)")
 
 
 def _MESSAGE_MEMBERSHIP_REJECTED():
@@ -69,10 +69,7 @@ def mail_new_membership_request(locale, admin, group_name, url, user_name, user_
     }
 
     try:
-        if (admin.email is None) or not len(admin.email):
-            log.warn("Admin without email {0} ({1}), notification not send to this admin".format(admin.display_name, admin.email))
-        else:
-            mail_user(admin, subject, message)
+        _mail_user(admin, subject, message, context="Admin")
     except Exception:
         log.exception("Mail could not be sent")
     finally:
@@ -102,12 +99,24 @@ def mail_process_status(locale, member_user, approve, group_name, capacity):
     }
 
     try:
-        mail_user(member_user, subject, message)
+        _mail_user(member_user, subject, message, context="User")
     except Exception:
         log.exception("Mail could not be sent")
         # raise MailerException("Mail could not be sent")
     finally:
         set_lang(current_locale)
+
+
+def _mail_user(user, subject, message, context="User"):
+    if (user.email is None) or not len(user.email):
+        log.warn("{0} without email {1} ({2}), notification not send to this {3}".format(
+            context,
+            user.display_name,
+            user.email,
+            context.lower()
+        ))
+    else:
+        mail_user(user, subject, message)
 
 
 def _reset_lang():
