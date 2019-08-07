@@ -69,7 +69,10 @@ def mail_new_membership_request(locale, admin, group_name, url, user_name, user_
     }
 
     try:
-        mail_user(admin, subject, message)
+        if (admin.email is None) or not len(admin.email):
+            log.warn("Admin without email {0} ({1}), notification not send to this admin".format(admin.display_name, admin.email))
+        else:
+            mail_user(admin, subject, message)
     except Exception:
         log.exception("Mail could not be sent")
     finally:
