@@ -67,6 +67,8 @@ class YtpRequestController(BaseController):
         except logic.ValidationError as e:
             errors = e.error_dict if e.error_dict else {}
             error_summary = e.error_summary
+            log.warn(e)
+            log.warn("errors: {0}".format(errors))
             return self.new(errors, error_summary)
 
     def show(self, mrequest_id):
