@@ -4,6 +4,8 @@ from pylons import i18n
 from ckan.common import _
 import logging
 
+from ckanext.ytp.request.sqs import send_sqs_message
+
 log = logging.getLogger(__name__)
 
 
@@ -116,7 +118,8 @@ def _mail_user(user, subject, message, context="User"):
             context.lower()
         ))
     else:
-        mail_user(user, subject, message)
+        send_sqs_message(user, subject, message)
+        # mail_user(user, subject, message)
 
 
 def _reset_lang():
