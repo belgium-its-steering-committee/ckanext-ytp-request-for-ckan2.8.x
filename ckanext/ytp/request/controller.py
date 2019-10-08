@@ -65,10 +65,8 @@ class YtpRequestController(BaseController):
         except logic.NotAuthorized:
             abort(405, self.not_auth_message)
         except logic.ValidationError as e:
-            errors = e.error_dict if e.error_dict else {}
+            errors = e.error_dict if e.error_dict else True
             error_summary = e.error_summary
-            log.warn(e)
-            log.warn("errors: {0}".format(errors))
             return self.new(errors, error_summary)
 
     def show(self, mrequest_id):
