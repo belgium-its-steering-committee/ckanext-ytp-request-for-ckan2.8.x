@@ -110,8 +110,6 @@ def mail_process_status(locale, member_user, approve, group_name, capacity):
 
 
 def _mail_user(user, subject, message, context="User"):
-    if user.name=='geofeltensys':
-        print("\n\tUSER IS geofeltensys:: ")
         if (user.email is None) or not len(user.email):
             log.warn("{0} without email {1} ({2}), notification not send to this {3}".format(
                 context,
