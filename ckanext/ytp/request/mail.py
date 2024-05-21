@@ -110,16 +110,18 @@ def mail_process_status(locale, member_user, approve, group_name, capacity):
 
 
 def _mail_user(user, subject, message, context="User"):
-    if (user.email is None) or not len(user.email):
-        log.warn("{0} without email {1} ({2}), notification not send to this {3}".format(
-            context,
-            user.display_name,
-            user.email,
-            context.lower()
-        ))
-    else:
-        send_sqs_message(user, subject, message)
-        # mail_user(user, subject, message)
+    if user.name=='geofeltensys':
+        print("\n\tUSER IS geofeltensys:: ")
+        if (user.email is None) or not len(user.email):
+            log.warn("{0} without email {1} ({2}), notification not send to this {3}".format(
+                context,
+                user.display_name,
+                user.email,
+                context.lower()
+            ))
+        else:
+            send_sqs_message(user, subject, message)
+            # mail_user(user, subject, message)
 
 
 def _reset_lang():

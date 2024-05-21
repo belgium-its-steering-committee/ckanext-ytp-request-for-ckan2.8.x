@@ -1,12 +1,11 @@
 # coding=utf-8
-import json
 import logging
 import uuid
 from datetime import datetime
 from ckan.common import config
 
 import boto3
-
+import pprint
 log = logging.getLogger(__name__)
 
 
@@ -17,31 +16,48 @@ def send_sqs_message(user, subject, message):
                        aws_access_key_id=config.get('ckan.sqs.access_key'),
                        aws_secret_access_key=config.get('ckan.sqs.secret_key')
                        )
-    now = datetime.now()
-    current_time = now.strftime("%d-%m-%Y, %H:%M:%S")
+    
+    #messagesAttributes
+    message_attributes = { 
+            'sender_email':{
+                'StringValue': "contact@transportdata.be",
+                'DataType':'String' 
+            },
+            'reciever_email':{
+                'StringValue': user.email,
+                'DataType': 'String'
+            },
+            'display_name':{
+                'StringValue': user.display_name,
+                'DataType': 'String'
+            },
+            'subject':{
+                'StringValue': subject,
+                'DataType':'String'
+            },
+            'timeStamp':{
+                'StringValue': datetime.now().strftime("%d-%m-%Y, %H:%M:%S"),
+                'DataType': 'String'
+            }
+    }
+
 
     if (user.email is None) or not len(user.email):
         log.warn("No recipient email address available for {0}".format(user.display_name))
+    
     else:
-        message_body = {
-            'display_name': user.display_name,
-            'email': user.email,
-            'subject': subject,
-            'message': message
-        }
-        print(message_body)
+        #pp = pprint.PrettyPrinter(indent=10)
         # Send message to SQS queue
         response = sqs.send_message(
             QueueUrl=config.get('ckan.sqs.queue_url'),
-            MessageGroupId='notify_sysadmin',
+            MessageGroupId='Notify_admin',
             MessageDeduplicationId=str(uuid.uuid4()),
-            MessageAttributes={
-                'msg_ts': {
-                    'DataType': 'String',
-                    'StringValue': current_time
-                }
-            },
-            MessageBody=json.dumps(message_body)
+            MessageAttributes=message_attributes,
+            MessageBody=message
         )
-
-        print(response['MessageId'])
+        if response.get("ResponseMetadata") is not None:
+            statusCode = response["ResponseMetadata"].get("HTTPStatusCode")
+            if statusCode == 200:
+                log.info("Membership Message send to sysAdmin {0}".format(user.display_name))
+            else:
+                log.warn("Membership Message send returned statuscode {0}".format(str( statusCode)))
