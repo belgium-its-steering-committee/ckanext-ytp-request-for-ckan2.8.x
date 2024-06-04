@@ -29,7 +29,6 @@ def get_organization_admins(group_id):
 
 def get_ckan_admins():
     admins = set(model.Session.query(model.User).filter(model.User.sysadmin == True))  # noqa
-
     return admins
 
 

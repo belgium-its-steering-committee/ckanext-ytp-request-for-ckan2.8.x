@@ -48,12 +48,13 @@ def send_sqs_message(user, subject, message):
     else:
         # Send message to SQS queue
         response = sqs.send_message(
-            QueueUrl=toolkit.config.get(('ckan.sqs.queue_url'),
+            QueueUrl=toolkit.config.get('ckan.sqs.queue_url'),
             MessageGroupId='Notify_admin',
             MessageDeduplicationId=str(uuid.uuid4()),
             MessageAttributes=message_attributes,
             MessageBody=message
         )
+        #if response.get("ResponseMetadata") is not None:
         if "ResponseMetadata" in response:
             statusCode = response["ResponseMetadata"].get("HTTPStatusCode")
             if statusCode == 200:

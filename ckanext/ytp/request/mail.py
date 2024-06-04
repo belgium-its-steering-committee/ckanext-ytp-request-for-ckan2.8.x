@@ -68,7 +68,7 @@ def mail_new_membership_request(locale, admin, group_name, url, user_name, user_
         'user': user_name,
         'email': user_email,
         'organization': group_name,
-        'link': url
+        'link': 'geen_link_als_test'
     }
 
     try:
@@ -111,16 +111,17 @@ def mail_process_status(locale, member_user, approve, group_name, capacity):
 
 
 def _mail_user(user, subject, message, context="User"):
-        if (user.email is None) or not len(user.email):
-            log.warn("{0} without email {1} ({2}), notification not send to this {3}".format(
-                context,
-                user.display_name,
-                user.email,
-                context.lower()
+            print("send to:: ", user.name,' ', user.email)
+            if (user.email is None) or not len(user.email):
+                log.warn("{0} without email {1} ({2}), notification not send to this {3}".format(
+                    context,
+                    user.display_name,
+                    user.email,
+                    context.lower()
             ))
-        else:
-            send_sqs_message(user, subject, message)
-            # mail_user(user, subject, message)
+            else:
+                send_sqs_message(user, subject, message)
+                # mail_user(user, subject, message)
 
 
 def _reset_lang():
