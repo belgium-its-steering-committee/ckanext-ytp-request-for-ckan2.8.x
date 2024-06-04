@@ -68,7 +68,7 @@ def mail_new_membership_request(locale, admin, group_name, url, user_name, user_
         'user': user_name,
         'email': user_email,
         'organization': group_name,
-        'link': 'geen_link_als_test'
+        'link': url
     }
 
     try:
@@ -111,7 +111,6 @@ def mail_process_status(locale, member_user, approve, group_name, capacity):
 
 
 def _mail_user(user, subject, message, context="User"):
-            print("send to:: ", user.name,' ', user.email)
             if (user.email is None) or not len(user.email):
                 log.warn("{0} without email {1} ({2}), notification not send to this {3}".format(
                     context,
