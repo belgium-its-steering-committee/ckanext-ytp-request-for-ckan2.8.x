@@ -26,7 +26,7 @@ def member_request(context, data_dict):
 
     # Return most current instance from memberrequest table
     member_request_obj = model.Session.query(MemberRequest).filter(
-        MemberRequest.membership_id == mrequest_id).order_by('request_date desc').limit(1).first()
+        MemberRequest.membership_id == mrequest_id).order_by(MemberRequest.request_date.desc()).limit(1).first()
     if not member_request_obj or member_request_obj.status != 'pending':
         raise logic.NotFound(
             "Member request associated with membership not found")

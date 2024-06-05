@@ -4,6 +4,7 @@ from pylons import i18n
 from ckan.common import _
 import logging
 
+#TODO make helper for send_sqs_message
 from ckanext.ytp.request.sqs import send_sqs_message
 
 log = logging.getLogger(__name__)
@@ -104,7 +105,7 @@ def mail_process_status(locale, member_user, approve, group_name, capacity):
         _mail_user(member_user, subject, message, context="User")
     except Exception:
         log.exception("Mail could not be sent")
-        # raise MailerException("Mail could not be sent")
+        #raise MailerException("Mail could not be sent")
     finally:
         set_lang(current_locale)
 
