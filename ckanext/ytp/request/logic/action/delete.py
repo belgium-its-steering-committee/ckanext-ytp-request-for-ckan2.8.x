@@ -74,8 +74,9 @@ def _process_request(context, organization_id, member, status):
     member.state = 'deleted'
     # Fetch the newest member_request associated to this membership (sort by
     # last modified field)
+    # bug label 'request_date desc' mag geen txt zijn
     member_request = model.Session.query(MemberRequest).filter(
-        MemberRequest.membership_id == member.id).order_by('request_date desc').limit(1).first()
+        MemberRequest.membership_id == member.id).order_by(MemberRequest.request_date.desc()).limit(1).first()
 
     # BFW: Create a new instance every time membership status is changed
     message = u'MemberRequest cancelled by own user'
