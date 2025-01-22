@@ -95,14 +95,14 @@ def _create_member_request(context, data_dict):
     if url:
         url = url + url_for('member_request_show', mrequest_id=member.id)
     # Locale should be admin locale since mail is sent to admins
-    if role == 'admin':
-        for admin in _get_ckan_admins():
+    #if role == 'admin':
+    for SysAdmin in _get_ckan_admins():
+        mail_new_membership_request(
+                locale, SysAdmin, group.display_name, url, userobj.display_name, userobj.email)
+    #else
+    for OrgAdmin in _get_organization_admins(group.id):
             mail_new_membership_request(
-                locale, admin, group.display_name, url, userobj.display_name, userobj.email)
-    else:
-        for admin in _get_organization_admins(group.id):
-            mail_new_membership_request(
-                locale, admin, group.display_name, url, userobj.display_name, userobj.email)
+                locale, OrgAdmin, group.display_name, url, userobj.display_name, userobj.email)
 
     return member
 
